@@ -2,7 +2,8 @@
 pipeline {
     agent any
     tools {
-        gradle 'gradle-8.6'
+        //gradle 'gradle-8.6'
+        java JAVA17
     }
     environment {
         VERSION = "${env.BUILD_NUMBER}"
