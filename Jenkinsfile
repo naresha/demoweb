@@ -1,4 +1,7 @@
 pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+    }
     agent any
     tools {
         //gradle 'gradle-8.6'
@@ -31,7 +34,7 @@ pipeline {
     }
     post {
         always {
-            //archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/libs/*.war', fingerprint: true
             junit 'build/test-results/**/*.xml'
             jacoco(
                     execPattern: 'build/jacoco/*.exec',
@@ -40,7 +43,7 @@ pipeline {
             )
             recordIssues(
                     tools: [checkStyle(pattern: 'build/reports/checkstyle/*.xml'),
-                            pmd(pattern: 'build/reports/pmd/*.xml')]
+                            pmdParser(pattern: 'build/reports/pmd/*.xml')]
             )
         }
     }
