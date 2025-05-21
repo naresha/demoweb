@@ -45,6 +45,16 @@ pipeline {
                     tools: [checkStyle(pattern: 'build/reports/checkstyle/*.xml'),
                             pmdParser(pattern: 'build/reports/pmd/*.xml')]
             )
+            recordCoverage(
+                    tools: [[parser: 'JACOCO', pattern: 'build/reports/jacoco/test/jacocoTestReport.xml']],
+                    qualityGates: [[threshold: 80, metric: 'LINE', unstable: true]]
+            )
+        }
+        success {
+            echo "Buid succeeded"
+        }
+        failure {
+            echo "Build failed"
         }
     }
 }
